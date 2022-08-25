@@ -25,6 +25,18 @@ import customerService from '../customer/customer.service';
 import htmlToPdf from 'html-pdf';
 import moment from 'moment';
 
+let chrome = {};
+let puppeteer;
+
+if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
+  // running on the Vercel platform.
+  chrome = require('chrome-aws-lambda');
+  puppeteer = require('puppeteer-core');
+} else {
+  // running locally.
+  puppeteer = require('puppeteer');
+}
+
 const templateDirectory = path.resolve(process.cwd(), 'templates');
 
 const validateAndModifyPayload = async (
@@ -316,18 +328,28 @@ const printTransaction = async (
       path.join(templateDirectory, 'tagihan.html'),
       'utf8'
     );
-  }
+  } 
 
   const template = handlers.compile(`${file}`);
   const html = template(content);
-
-  const pdf = htmlToPdf.create(html, {
-    format: 'A4',
-    phantomPath: path.resolve(
-      process.cwd(),
-      "node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs"
-    ),
+  const browser = await puppeteer.launch({
+    args: [...chrome.args, '--hide-scrollbars', '--disable-web-security'],
+    defaultViewport: chrome.defaultViewport,
+    executablePath: await chrome.executablePath,
+    headless: true,
+    ignoreHTTPSErrors: true,
   });
+  const page = await browser.newPage();
+  await page.setContent(html, { waitUntil: 'networkidle0' });
+  const pdf = await page.pdf({ format: 'A4' });
+
+  // const pdf = htmlToPdf.create(html, {
+  //   format: 'A4',
+  //   phantomPath: path.resolve(
+  //     process.cwd(),
+  //     'node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs'
+  //   ),
+  // });
 
   return pdf;
 };
@@ -391,7 +413,7 @@ const printSummary = async ({ startDate, endDate }: DateQuery) => {
     format: 'A4',
     phantomPath: path.resolve(
       process.cwd(),
-      "node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs"
+      'node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs'
     ),
   });
 };
