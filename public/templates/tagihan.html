@@ -1,0 +1,149 @@
+<html lang="en">
+
+<head>
+  <style>
+    body {
+      background-color: white;
+      color: #050504;
+      font-family: Montserrat,
+        sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    *,
+    *::after,
+    *::before {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 1.3rem;
+    }
+
+    .container {
+      min-height: 100%;
+      position: relative;
+    }
+
+    .table {
+      border-collapse: collapse;
+      margin-bottom: 21px;
+      text-align: center;
+      width: 100%;
+      page-break-inside: auto;
+    }
+
+    .tableHead {
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      border: 1px solid #050504;
+      display: table-header-group;
+
+    }
+
+    .tableHeadCol {
+      padding: 14px 7px;
+    }
+
+    .tableBody {
+      font-size: 12px;
+    }
+
+    .tableBodyCol {
+      border: 1px solid #050504;
+      padding: 14px 7px;
+    }
+
+    .signatureOuterDiv {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .signatureInnerDiv {
+      display: grid;
+      grid-template-columns: 1fr fit-content;
+      width: 25%;
+      margin: 0 0 0 auto;
+      gap: 0.5rem;
+      justify-content: space-between;
+      padding: 0.5rem;
+      text-align: center;
+    }
+
+    .avoid{
+      page-break-inside: avoid !important;
+      page-break-after: auto;
+      margin: 4px 0 4px 0;  
+    }
+
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+
+  </style>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+  
+  <h1>No Invoice: {{main.invoiceNum}}</h1>
+  {{#if main.customerName}}
+  <h1>Kepada: {{main.customerName}}</h1>
+  {{else}}
+  <h1>Kepada: {{main.customerInitial}}</h1>
+  {{/if}}
+  <h1>Perincian Tagihan</h1>
+  <h1>Tanggal {{formatDate main.endDate}}</h1>
+  <br><br>
+
+  <table class="table" border="1">
+    <thead class="tableHead">
+      <tr class="tableHeadRow">
+        <td class="tableHeadCol">NO</td>
+        <td class="tableHeadCol">TGL BON</td>
+        <td class="tableHeadCol">NO. CONTAINER</td>
+        <td class="tableHeadCol">NO. BON</td>
+        <td class="tableHeadCol">TUJUAN</td>
+        <td class="tableHeadCol">NOPOL</td>
+        <td class="tableHeadCol">HARGA</td>
+      </tr>
+    </thead>
+    <tbody class="tableBody">
+      {{#each transactions}}
+      <tr class="tableBodyRow">
+        <td class="tableBodyCol"><div class="avoid">{{indexPlusOne @index}}</div></td>
+        <td class="tableBodyCol"><div class="avoid">{{formatDate this.date}}</div></td>
+        <td class="tableBodyCol"><div class="avoid">{{this.containerNo}}</div></td>
+        <td class="tableBodyCol"><div class="avoid">{{this.invoiceNo}}</div></td>
+        <td class="tableBodyCol"><div class="avoid">{{this.destination}}</div></p>
+        <td class="tableBodyCol"><div class="avoid">{{this.licenseNumber}}</div></td>
+        <td class="tableBodyCol"><div class="avoid">{{formatRupiah this.sellingPrice}}</div></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+<div class="signatureOuterDiv">
+  <div class="signatureInnerDiv">
+    <p style="font-weight: bold; font-size: 24px; text-align: end;">Total {{formatRupiah main.totalSellingPrice}}</p>
+    <br><br>
+  </div>
+</div>
+
+<div>
+  <p>Tagihan Dikirim Ke</p>
+  <p>No Rek.8195314663</p>
+  <p>Ali Martono</p>
+  <p>BCA</p>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<html lang="en">
+  <head>
+    <style>
+      body {
+        background-color: white;
+        color: #050504;
+        font-family: Montserrat, sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      *,
+      *::after,
+      *::before {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      @page {
+        size: A4 portrait;
+        margin: 1.3rem;
+      }
+
+      .page-title {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .container {
+        min-height: 100%;
+        position: relative;
+      }
+
+      .table {
+        border-collapse: collapse;
+        margin-bottom: 21px;
+        text-align: center;
+        width: 100%;
+      }
+
+      .tableHead {
+        font-size: 18px;
+        font-weight: 700;
+        text-transform: uppercase;
+        border: 1px solid #050504;
+      }
+
+      .tableHeadRow {
+        break-inside: avoid;
+      }
+
+      .tableHeadCol {
+        padding: 14px 7px;
+      }
+
+      .tableBody {
+        font-size: 14px;
+      }
+
+      .tableBodyRow {
+        break-inside: avoid;
+      }
+
+      .tableBodyCol {
+        border: 1px solid #050504;
+        padding: 14px 7px;
+      }
+    </style>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+
+  <body>
+    <h1 class="page-title">Laporan {{startDate}} - {{endDate}}</h1>
+    <table class="table" border="1">
+      <thead class="tableHead">
+        <tr class="tableHeadRow">
+          <td class="tableHeadCol">No.Truk</td>
+          <td class="tableHeadCol">Total Biaya</td>
+          <td class="tableHeadCol">Total Borongan</td>
+          <td class="tableHeadCol">Total Pembayaran</td>
+          <td class="tableHeadCol">Margin</td>
+        </tr>
+      </thead>
+      <tbody class="tableBody">
+        {{#each summary}}
+        <tr class="tableBodyRow">
+          <td class="tableBodyCol">{{@key}}</td>
+          <td class="tableBodyCol">{{formatRupiah this.additionalCost}}</td>
+          <td class="tableBodyCol">{{formatRupiah this.cost}}</td>
+          <td class="tableBodyCol">{{formatRupiah this.sellingPrice}}</td>
+          <td class="tableBodyCol">{{formatRupiah this.margin}}</td>
+        </tr>
+        {{/each}} {{#each transactions}}
+        <tr class="tableBodyRow">
+          <td class="tableBodyCol">{{this.details}}</td>
+          <td class="tableBodyCol">{{formatRupiah this.cost}}</td>
+          <td class="tableBodyCol"></td>
+          <td class="tableBodyCol"></td>
+          <td class="tableBodyCol"></td>
+        </tr>
+        {{/each}}
+        <tr class="tableBodyRow">
+          <td class="tableBodyCol" style="font-weight: bold">TOTAL</td>
+          <td class="tableBodyCol" style="font-weight: bold">{{formatRupiah totalCost}}</td>
+          <td class="tableBodyCol" style="font-weight: bold">{{formatRupiah totalTruckCost}}</td>
+          <td class="tableBodyCol" style="font-weight: bold">{{formatRupiah totalSellingPrice}}</td>
+          <td class="tableBodyCol" style="font-weight: bold">{{formatRupiah totalMargin}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <div class="signatureOuterDiv">
+  <div class="signatureInnerDiv">
+    <p style="font-weight: bold; font-size: 24px; text-align: end;">Total {{formatRupiah main.totalSellingPrice}}</p>
+    <br><br>
+  </div>
+</div> -->
+  </body>
+</html>

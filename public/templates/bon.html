@@ -1,0 +1,134 @@
+<html lang="en">
+
+<head>
+  <style>
+    body {
+      background-color: white;
+      color: #050504;
+      font-family: Montserrat,
+        sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    *,
+    *::after,
+    *::before {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 1.3rem;
+    }
+
+    .container {
+      min-height: 100%;
+      position: relative;
+    }
+
+    .table {
+      border-collapse: collapse;
+      margin-bottom: 21px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .tableHead {
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      border: 1px solid #050504;
+    }
+
+    .tableHeadRow {
+      break-inside: avoid;
+    }
+
+    .tableHeadCol {
+      padding: 14px 7px;
+    }
+
+    .tableBody {
+      font-size: 12px;
+    }
+
+    .tableBodyRow {
+      break-inside: avoid;
+    }
+
+    .tableBodyCol {
+      border: 1px solid #050504;
+      padding: 14px 7px;
+    }
+
+    .signatureOuterDiv {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .signatureInnerDiv {
+      display: grid;
+      grid-template-columns: 1fr fit-content;
+      width: 25%;
+      margin: 0 0 0 auto;
+      gap: 0.5rem;
+      justify-content: space-between;
+      padding: 0.5rem;
+      text-align: center;
+    }
+  </style>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+  {{#if main.customerName}}
+  <h1>{{main.customerName}}</h1>
+  {{else}}
+  <h1>{{main.customerInitial}}</h1>
+  {{/if}}
+  <h1>Perincian Bon</h1>
+  <h1>Tanggal {{formatDate main.endDate}}</h1>
+  <br><br>
+
+  <table class="table" border="1">
+    <thead class="tableHead">
+      <tr class="tableHeadRow">
+        <td class="tableHeadCol">NO</td>
+        <td class="tableHeadCol">TGL BON</td>
+        <td class="tableHeadCol">NO. CONTAINER</td>
+        <td class="tableHeadCol">NO. BON</td>
+        <td class="tableHeadCol">TUJUAN</td>
+        <td class="tableHeadCol">NOPOL</td>
+        <td class="tableHeadCol">KETERANGAN</td>
+      </tr>
+    </thead>
+    <tbody class="tableBody">
+      {{#each transactions}}
+      <tr class="tableBodyRow">
+        <td class="tableBodyCol">{{indexPlusOne @index}}</td>
+        <td class="tableBodyCol">{{formatDate this.date}}</td>
+        <td class="tableBodyCol">{{this.containerNo}}</td>
+        <td class="tableBodyCol">{{this.invoiceNo}}</td>
+        <td class="tableBodyCol">{{this.destination}}</p>
+        <td class="tableBodyCol">{{this.licenseNumber}}</td>
+        <td class="tableBodyCol">{{this.bon}}</td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+<div class="signatureOuterDiv">
+  <div class="signatureInnerDiv">
+    <p>Yang Menerima</p>
+    <br><br><br><br>
+  </div>
+
+</div>
+
+</body>
+
+</html>
